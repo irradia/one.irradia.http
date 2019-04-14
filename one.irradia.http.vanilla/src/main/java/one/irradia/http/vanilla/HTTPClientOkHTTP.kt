@@ -7,6 +7,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
 import okhttp3.Route
+import okhttp3.internal.Version
 import okhttp3.internal.http.HttpMethod
 import one.irradia.http.api.HTTPAuthentication
 import one.irradia.http.api.HTTPClientType
@@ -23,10 +24,19 @@ import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal class HTTPClientOkHTTP(
+  private val userAgent: String?,
   private val client: OkHttpClient) : HTTPClientType {
 
   private val logger = LoggerFactory.getLogger(HTTPClientOkHTTP::class.java)
   private val closed = AtomicBoolean(false)
+
+  private fun userAgentString(): String {
+    return if (this.userAgent != null) {
+      "${this.userAgent} one.irradia.http.vanilla/${BuildConfig.HTTP_PROVIDER_VERSION} ${Version.userAgent()}"
+    } else {
+      "one.irradia.http.vanilla/${BuildConfig.HTTP_PROVIDER_VERSION} ${Version.userAgent()}"
+    }
+  }
 
   override fun close() {
     if (closed.compareAndSet(false, true)) {
@@ -47,6 +57,7 @@ internal class HTTPClientOkHTTP(
 
     val builder = Request.Builder()
     builder.url(uri.toString())
+    builder.header("User-Agent", userAgentString())
 
     val bodyActual : ByteArray? =
       if (HttpMethod.requiresRequestBody(method) && body == null) {

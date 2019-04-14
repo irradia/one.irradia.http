@@ -23,3 +23,9 @@ configurations {
 dependencies {
   api project(":one.irradia.http.api")
 }
+
+android {
+  buildTypes.each {
+    buildType -> buildType.buildConfigField("String", "HTTP_PROVIDER_VERSION", "\"${VERSION_NAME}\"")
+  }
+}

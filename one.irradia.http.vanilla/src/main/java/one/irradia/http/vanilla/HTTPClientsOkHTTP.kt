@@ -34,7 +34,7 @@ class HTTPClientsOkHTTP : HTTPClientProviderType {
     }
   }
 
-  override fun createClient(): HTTPClientType =
-    HTTPClientOkHTTP(clients.invoke())
+  override fun createClient(userAgent: String?): HTTPClientType =
+    HTTPClientOkHTTP(userAgent, clients.invoke())
 
 }

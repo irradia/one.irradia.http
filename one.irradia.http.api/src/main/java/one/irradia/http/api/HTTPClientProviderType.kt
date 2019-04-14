@@ -11,6 +11,7 @@ interface HTTPClientProviderType {
    * Create a new HTTP client.
    */
 
-  fun createClient(): HTTPClientType
+  fun createClient(
+    userAgent: String? = null): HTTPClientType
 
 }
