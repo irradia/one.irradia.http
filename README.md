@@ -4,7 +4,7 @@ one.irradia.http
 [![Build Status](https://img.shields.io/travis/irradia/one.irradia.http.svg?style=flat-square)](https://travis-ci.org/irradia/one.irradia.http)
 [![Maven Central](https://img.shields.io/maven-central/v/one.irradia.http/one.irradia.http.api.svg?style=flat-square)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22one.irradia.http%22)
 [![Maven Central (snapshot)](https://img.shields.io/nexus/s/https/oss.sonatype.org/one.irradia.http/one.irradia.http.api.svg?style=flat-square)](https://oss.sonatype.org/content/repositories/snapshots/one.irradia.http/)
-[![Codacy Badge](https://img.shields.io/codacy/grade/CODACY_GRADE.svg?style=flat-square)](https://www.codacy.com/app/github_79/one.irradia.http?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=irradia/one.irradia.http&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://img.shields.io/codacy/grade/2f6530bb221e4aecacee47d125cdcd04.svg?style=flat-square)](https://www.codacy.com/app/github_79/one.irradia.http?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=irradia/one.irradia.http&amp;utm_campaign=Badge_Grade)
 [![Codecov](https://img.shields.io/codecov/c/github/irradia/one.irradia.http.svg?style=flat-square)](https://codecov.io/gh/irradia/one.irradia.http)
 [![Gitter](https://badges.gitter.im/irradia-org/community.svg)](https://gitter.im/irradia-org/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
