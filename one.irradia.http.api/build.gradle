@@ -15,5 +15,7 @@
  */
 
 configurations {
+  api.extendsFrom dependencyIrradiaMimeAPI
+
   implementation.extendsFrom dependencyKotlinStdlib
 }

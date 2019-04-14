@@ -170,6 +170,8 @@ subprojects { project ->
     dependencyAndroidSupportTestRules
     dependencyAndroidSupportTestRunner
     dependencyAndroidTestOrchestrator
+    dependencyIrradiaMimeAPI
+    dependencyIrradiaMimeImpl
     dependencyJUnit
     dependencyKotlinReflect
     dependencyKotlinStdlib
@@ -184,6 +186,8 @@ subprojects { project ->
     dependencyAndroidSupportTestRules  "com.android.support.test:rules:1.0.2"
     dependencyAndroidSupportTestRunner "com.android.support.test:runner:1.0.2"
     dependencyAndroidTestOrchestrator  "com.android.support.test:orchestrator:1.0.2"
+    dependencyIrradiaMimeAPI           "one.irradia.mime:one.irradia.mime.api:0.0.4"
+    dependencyIrradiaMimeImpl          "one.irradia.mime:one.irradia.mime.vanilla:0.0.4"
     dependencyJUnit                    "junit:junit:4.12"
     dependencyKotlinReflect            "org.jetbrains.kotlin:kotlin-reflect:1.3.21"
     dependencyKotlinStdlib             "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

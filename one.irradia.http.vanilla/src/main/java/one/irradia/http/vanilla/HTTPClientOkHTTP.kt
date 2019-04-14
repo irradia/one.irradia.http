@@ -1,8 +1,10 @@
 package one.irradia.http.vanilla
 
 import okhttp3.Credentials
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.Response
 import okhttp3.Route
 import one.irradia.http.api.HTTPAuthentication
@@ -11,9 +13,11 @@ import one.irradia.http.api.HTTPResult
 import one.irradia.http.api.HTTPResult.HTTPFailed.HTTPError
 import one.irradia.http.api.HTTPResult.HTTPFailed.HTTPFailure
 import one.irradia.http.api.HTTPResult.HTTPOK
+import one.irradia.mime.api.MIMEType
 import org.slf4j.LoggerFactory
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.lang.IllegalArgumentException
 import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -31,19 +35,38 @@ internal class HTTPClientOkHTTP(
     }
   }
 
-  override fun get(
+  override fun request(
     uri: URI,
+    method: String,
     authentication: (URI) -> HTTPAuthentication?,
-    offset: Long): HTTPResult<InputStream> {
-
-    this.logger.debug("GET {} (offset {})", uri, offset)
+    offset: Long,
+    contentType: MIMEType?,
+    body: ByteArray?): HTTPResult<InputStream> {
+    this.logger.debug("{} {} (offset {})", method, uri, offset)
 
     val builder = Request.Builder()
-    builder
-      .url(uri.toString())
-      .method("GET", null)
+    builder.url(uri.toString())
 
+    if (method == "PUT" && body == null) {
+      throw IllegalArgumentException("PUT requests must have bodies")
+    }
+
+    builder.method(method, mapBody(contentType, body))
     return call(builder.build(), authentication, uri)
+  }
+
+  private fun mapBody(contentType: MIMEType?, body: ByteArray?): RequestBody? {
+    return if (body != null) {
+      val mediaType =
+        if (contentType != null) {
+          MediaType.parse(contentType.fullType)
+        } else {
+          MediaType.get("application/octet-stream")
+        }
+      RequestBody.create(mediaType, body)
+    } else {
+      null
+    }
   }
 
   private fun call(

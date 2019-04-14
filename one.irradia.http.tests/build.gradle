@@ -19,6 +19,7 @@ configurations {
   api.extendsFrom dependencySLF4J
 
   implementation.extendsFrom dependencyNanoHTTPD
+  implementation.extendsFrom dependencyIrradiaMimeImpl
   implementation.extendsFrom dependencyKotlinStdlib
   testImplementation.extendsFrom dependencyLogback
 }
