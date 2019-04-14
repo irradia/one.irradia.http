@@ -7,6 +7,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.Response
 import okhttp3.Route
+import okhttp3.internal.http.HttpMethod
 import one.irradia.http.api.HTTPAuthentication
 import one.irradia.http.api.HTTPClientType
 import one.irradia.http.api.HTTPResult
@@ -47,11 +48,14 @@ internal class HTTPClientOkHTTP(
     val builder = Request.Builder()
     builder.url(uri.toString())
 
-    if (method == "PUT" && body == null) {
-      throw IllegalArgumentException("PUT requests must have bodies")
-    }
+    val bodyActual : ByteArray? =
+      if (HttpMethod.requiresRequestBody(method) && body == null) {
+        ByteArray(0)
+      } else {
+        body
+      }
 
-    builder.method(method, mapBody(contentType, body))
+    builder.method(method, mapBody(contentType, bodyActual))
     return call(builder.build(), authentication, uri)
   }
 

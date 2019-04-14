@@ -1333,16 +1333,6 @@ abstract class HTTPClientsContract {
     }
   }
 
-  @Test
-  fun testRequestPUTWithoutBody() {
-    this.clients.createClient().use { client ->
-      this.expectedException.expect(IllegalArgumentException::class.java)
-      client.request(
-        URI.create("http://127.0.0.1:30000/file.txt"),
-        method = "POST")
-    }
-  }
-
   private fun dumpResponse(response: HTTPResult<InputStream>) {
     System.out.println("response: $response")
     this.logger.debug("{}", response)
