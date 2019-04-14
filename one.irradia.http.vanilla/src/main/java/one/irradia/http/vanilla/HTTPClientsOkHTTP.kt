@@ -13,7 +13,28 @@ import one.irradia.http.api.HTTPClientType
 
 class HTTPClientsOkHTTP : HTTPClientProviderType {
 
+  companion object {
+
+    /**
+     * The default client creator.
+     */
+
+    val defaultClientCreator = { OkHttpClient() }
+
+    @JvmStatic
+    @Volatile
+    private var clients  = this.defaultClientCreator
+
+    /**
+     * Set the function used to create OkHttp clients for this service provider.
+     */
+
+    fun setClientCreator(creator: () -> OkHttpClient) {
+      this.clients = creator
+    }
+  }
+
   override fun createClient(): HTTPClientType =
-    HTTPClientOkHTTP(OkHttpClient())
+    HTTPClientOkHTTP(clients.invoke())
 
 }
