@@ -69,6 +69,12 @@ sealed class HTTPResult<T> {
 
   }
 
+  /**
+   * The HTTP request failed in some manner. It's possible that the request reached the
+   * server but the server returned an error. It's also possible that the request never reached
+   * the server (in which case, the only diagnostic information is the exception raised).
+   */
+
   sealed class HTTPFailed<T> : HTTPResult<T>() {
 
     /**
