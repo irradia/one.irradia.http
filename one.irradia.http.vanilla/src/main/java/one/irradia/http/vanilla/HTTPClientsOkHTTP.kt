@@ -15,6 +15,9 @@ class HTTPClientsOkHTTP : HTTPClientProviderType {
 
   companion object {
 
+    private val clientLock: Any = Object()
+    private var client: HTTPClientOkHTTP? = null
+
     /**
      * The default client creator.
      */
@@ -23,7 +26,7 @@ class HTTPClientsOkHTTP : HTTPClientProviderType {
 
     @JvmStatic
     @Volatile
-    private var clients  = this.defaultClientCreator
+    private var clients = this.defaultClientCreator
 
     /**
      * Set the function used to create OkHttp clients for this service provider.
@@ -35,6 +38,13 @@ class HTTPClientsOkHTTP : HTTPClientProviderType {
   }
 
   override fun createClient(userAgent: String?): HTTPClientType =
-    HTTPClientOkHTTP(userAgent, clients.invoke())
-
+    synchronized(clientLock) {
+      val currentClient = client
+      if (currentClient == null) {
+        client = HTTPClientOkHTTP(userAgent, clients.invoke())
+        client!!
+      } else {
+        currentClient
+      }
+    }
 }
