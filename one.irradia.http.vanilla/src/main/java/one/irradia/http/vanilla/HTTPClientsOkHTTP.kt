@@ -3,6 +3,7 @@ package one.irradia.http.vanilla
 import okhttp3.OkHttpClient
 import one.irradia.http.api.HTTPClientProviderType
 import one.irradia.http.api.HTTPClientType
+import java.util.Properties
 
 /**
  * An HTTP client provider based on OkHttp.
@@ -14,6 +15,18 @@ import one.irradia.http.api.HTTPClientType
 class HTTPClientsOkHTTP : HTTPClientProviderType {
 
   companion object {
+
+    private val version: String = loadVersion()
+
+    private fun loadVersion(): String {
+      return HTTPClientsOkHTTP::class.java.getResourceAsStream(
+        "/one/irradia/http/vanilla/version.properties")
+        .use { stream ->
+          val properties = Properties()
+          properties.load(stream)
+          properties.getProperty("version")
+        }
+    }
 
     private val clientLock: Any = Object()
     private var client: OkHttpClient? = null
@@ -41,6 +54,7 @@ class HTTPClientsOkHTTP : HTTPClientProviderType {
     synchronized(clientLock) {
       val currentClient = client
       HTTPClientOkHTTP(
+        version = version,
         userAgent = userAgent,
         client = if (currentClient == null) {
           client = clients.invoke()

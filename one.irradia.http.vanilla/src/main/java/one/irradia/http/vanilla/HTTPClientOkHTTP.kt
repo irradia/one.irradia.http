@@ -24,6 +24,7 @@ import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal class HTTPClientOkHTTP(
+  private val version: String,
   private val userAgent: String?,
   private val client: OkHttpClient) : HTTPClientType {
 
@@ -32,9 +33,9 @@ internal class HTTPClientOkHTTP(
 
   private fun userAgentString(): String {
     return if (this.userAgent != null) {
-      "${this.userAgent} one.irradia.http.vanilla/${BuildConfig.HTTP_PROVIDER_VERSION} ${Version.userAgent()}"
+      "${this.userAgent} one.irradia.http.vanilla/${version} ${Version.userAgent()}"
     } else {
-      "one.irradia.http.vanilla/${BuildConfig.HTTP_PROVIDER_VERSION} ${Version.userAgent()}"
+      "one.irradia.http.vanilla/${version} ${Version.userAgent()}"
     }
   }
 

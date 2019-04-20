@@ -24,8 +24,19 @@ dependencies {
   api project(":one.irradia.http.api")
 }
 
-android {
-  buildTypes.each {
-    buildType -> buildType.buildConfigField("String", "HTTP_PROVIDER_VERSION", "\"${VERSION_NAME}\"")
+def vanillaResourcesDir    = file("$buildDir/generated-resources/")
+def vanillaResourcesPkgDir = file("$vanillaResourcesDir/one/irradia/http/vanilla")
+
+task generateSources {
+  vanillaResourcesPkgDir.mkdirs()
+
+  def outputFile = file("$vanillaResourcesPkgDir/version.properties")
+  outputs.file(outputFile)
+  doLast {
+    outputFile.text = "version=${VERSION_NAME}"
   }
 }
+
+sourceSets.main.output.dir vanillaResourcesDir, builtBy: generateSources
+
+compileKotlin.dependsOn generateSources
