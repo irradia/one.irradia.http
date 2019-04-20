@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="one.irradia.http.tests.device">
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  <!-- Necessary because the test suite talks to an HTTP server on localhost -->
+  <application android:usesCleartextTraffic="true" />
+</manifest>

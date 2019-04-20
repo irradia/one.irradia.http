@@ -1,0 +1,4 @@
+include ':one.irradia.http.api'
+include ':one.irradia.http.vanilla'
+include ':one.irradia.http.tests'
+include ':one.irradia.http.tests.device'
