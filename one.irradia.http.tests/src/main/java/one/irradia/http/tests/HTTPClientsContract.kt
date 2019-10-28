@@ -374,7 +374,10 @@ abstract class HTTPClientsContract {
             code = 200,
             type = "text/plain",
             data = ByteArrayInputStream("Hello".toByteArray()),
-            size = 5L))))
+            size = 5L,
+            headers = mapOf(
+              Pair("CoNTeNt-LeNgTH", "5")
+            )))))
 
     this.clients.createClient().use { client ->
       this.httpd = createHTTPD(this.logger, responses)
@@ -387,6 +390,7 @@ abstract class HTTPClientsContract {
       val success = response as HTTPResult.HTTPOK
       Assert.assertEquals("", String(success.result.readBytes()))
       Assert.assertEquals("text/plain", success.contentTypeOrDefault)
+      Assert.assertEquals(5L, success.contentLength)
     }
   }
 
@@ -1401,7 +1405,6 @@ abstract class HTTPClientsContract {
           response.headers.keys.forEach { key ->
             serverResponse.addHeader(key, response.headers[key])
           }
-
           return serverResponse
         }
 

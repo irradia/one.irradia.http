@@ -25,7 +25,7 @@ sealed class HTTPResult<T> {
      * The length of the content in octets.
      */
 
-    val contentLength: Long,
+    val contentLength: Long?,
 
     /**
      * The headers returned by the server.
@@ -83,11 +83,12 @@ sealed class HTTPResult<T> {
 
     data class HTTPError<T>(
       override val uri: URI,
+
       /**
        * The length of the content in octets.
        */
 
-      val contentLength: Long,
+      val contentLength: Long?,
 
       /**
        * The headers returned by the server.
