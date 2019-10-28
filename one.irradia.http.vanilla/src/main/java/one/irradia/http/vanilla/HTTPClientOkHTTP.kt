@@ -88,7 +88,8 @@ internal class HTTPClientOkHTTP(
   private fun call(
     request: Request,
     authentication: (URI) -> HTTPAuthentication?,
-    uri: URI): HTTPResult<InputStream> {
+    uri: URI
+  ): HTTPResult<InputStream> {
     return try {
       val response =
         this.client.newBuilder()
@@ -97,11 +98,14 @@ internal class HTTPClientOkHTTP(
           .newCall(request)
           .execute()
 
+      val contentLength = contentLengthOf(response)
+      this.logger.trace("content-length: {}", contentLength)
+
       val code = response.code()
       if (code >= 400) {
         HTTPError(
           uri = uri,
-          contentLength = response.body()?.contentLength() ?: 0L,
+          contentLength = contentLength,
           headers = response.headers().toMultimap(),
           message = response.message(),
           statusCode = code,
@@ -109,7 +113,7 @@ internal class HTTPClientOkHTTP(
       } else {
         HTTPOK(
           uri = uri,
-          contentLength = response.body()?.contentLength() ?: 0L,
+          contentLength = contentLength,
           headers = response.headers().toMultimap(),
           message = response.message(),
           statusCode = code,
@@ -119,6 +123,22 @@ internal class HTTPClientOkHTTP(
       HTTPFailure(
         uri = uri,
         exception = e)
+    }
+  }
+
+  private fun contentLengthOf(response: Response): Long? {
+    return try {
+      val headers = response.headers()
+      for (header in headers.names()) {
+        if ("CONTENT-LENGTH".equals(header.toUpperCase())) {
+          val value = headers.get(header)
+          return value?.toLong()
+        }
+      }
+      null
+    } catch (e: Exception) {
+      this.logger.error("error retrieving content length: ", e)
+      null
     }
   }
 
