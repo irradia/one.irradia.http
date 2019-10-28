@@ -60,6 +60,10 @@ internal class HTTPClientOkHTTP(
     builder.url(uri.toString())
     builder.header("User-Agent", userAgentString())
 
+    if (offset > 0L) {
+      builder.header("Range", "bytes=${offset}-")
+    }
+
     val bodyActual : ByteArray? =
       if (HttpMethod.requiresRequestBody(method) && body == null) {
         ByteArray(0)
